@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saujana Link Repositori</title>
-    <!-- Framework & Library -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -25,7 +24,6 @@
 </head>
 <body class="pb-12">
 
-    <!-- HEADER -->
     <header class="bg-royal-blue text-white p-6 shadow-2xl border-b-4 border-yellow-500">
         <div class="container mx-auto flex flex-col md:flex-row items-center gap-6">
             <img src="https://i.postimg.cc/SN3YKfvk/smksi.png" alt="Logo SMKSI" class="w-20 bg-white p-2 rounded-xl shadow-lg">
@@ -39,7 +37,6 @@
     <main class="container mx-auto px-4 mt-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <!-- LEFT: BORANG & CARTA -->
             <div class="lg:col-span-4 space-y-6">
                 <div class="card p-6 border-t-8 border-royal-blue">
                     <h2 class="text-xl font-bold mb-6 text-royal-blue flex items-center gap-2">
@@ -69,12 +66,11 @@
                 </div>
 
                 <div class="card p-6">
-                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Statistik</h3>
+                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Statistik Kategori</h3>
                     <canvas id="categoryChart"></canvas>
                 </div>
             </div>
 
-            <!-- RIGHT: JADUAL DATA -->
             <div class="lg:col-span-8">
                 <div class="card p-6">
                     <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
@@ -101,180 +97,4 @@
                                     <th class="p-4 text-xs font-bold text-gray-500 uppercase text-center">Tindakan</th>
                                 </tr>
                             </thead>
-                            <tbody id="tableBody" class="divide-y divide-gray-50 text-gray-700">
-                                <!-- Data ditarik di sini -->
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <!-- LOADER -->
-                    <div id="loader" class="hidden text-center py-12">
-                        <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-royal-blue border-t-transparent"></div>
-                        <p class="mt-4 text-gray-400 text-sm font-semibold tracking-widest uppercase">Memuatkan data...</p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </main>
-
-    <script>
-        let allData = [];
-        let myChart;
-
-        // FUNGSI: SIMPAN DATA
-        document.getElementById('linkForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btnSimpan');
-            const originalBtn = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> MEMPROSES...';
-
-            const payload = {
-                nama: document.getElementById('nama').value,
-                kategori: document.getElementById('kategori').value,
-                url: document.getElementById('url').value
-            };
-
-            // Memanggil fungsi server-side 'simpanData' di Code.gs
-            google.script.run
-                .withSuccessHandler(function() {
-                    alert("Berjaya disimpan dalam Saujana Link Repositori!");
-                    document.getElementById('linkForm').reset();
-                    btn.disabled = false;
-                    btn.innerHTML = originalBtn;
-                    muatData(); // Refresh jadual secara automatik
-                })
-                .withFailureHandler(function(err) {
-                    alert("Ralat: " + err.message);
-                    btn.disabled = false;
-                    btn.innerHTML = originalBtn;
-                })
-                .simpanData(payload);
-        });
-
-        // FUNGSI: MUAT DATA DARI SHEET
-        function muatData() {
-            document.getElementById('loader').classList.remove('hidden');
-            document.getElementById('tableBody').innerHTML = '';
-            
-            google.script.run
-                .withSuccessHandler(function(data) {
-                    allData = data;
-                    renderJadual(data);
-                    binaCarta(data);
-                    document.getElementById('loader').classList.add('hidden');
-                })
-                .withFailureHandler(function(err) {
-                    alert("Gagal memuat data: " + err.message);
-                    document.getElementById('loader').classList.add('hidden');
-                })
-                .ambilData();
-        }
-
-        // FUNGSI: BINA JADUAL
-        function renderJadual(data) {
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = '';
-            
-            if (!data || data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" class="p-10 text-center text-gray-400 italic font-medium">Tiada pautan digital tersimpan.</td></tr>';
-                return;
-            }
-
-            // Susun data terbaru di atas
-            [...data].reverse().forEach(row => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-blue-50 transition duration-150";
-                tr.innerHTML = `
-                    <td class="p-4">
-                        <div class="font-bold text-gray-900 text-lg">${row[1]}</div>
-                        <div class="text-[10px] text-gray-400 mt-1 uppercase font-bold tracking-tighter">
-                            <i class="far fa-clock mr-1"></i> ${row[0]}
-                        </div>
-                    </td>
-                    <td class="p-4 text-center">
-                        <span class="px-3 py-1 text-[10px] font-extrabold rounded-full ${getBadge(row[2])}">
-                            ${row[2]}
-                        </span>
-                    </td>
-                    <td class="p-4 text-center">
-                        <a href="${row[3]}" target="_blank" class="inline-flex items-center gap-2 bg-royal-blue text-white px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-black transition shadow-md">
-                            BUKA <i class="fas fa-external-link-alt text-[10px]"></i>
-                        </a>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function getBadge(cat) {
-            if(cat === 'Kurikulum') return 'bg-blue-100 text-blue-700 border border-blue-200';
-            if(cat === 'HEM') return 'bg-emerald-100 text-emerald-700 border border-emerald-200';
-            return 'bg-purple-100 text-purple-700 border border-purple-200';
-        }
-
-        // FUNGSI: CARIAN
-        document.getElementById('search').addEventListener('input', function(e) {
-            const val = e.target.value.toLowerCase();
-            const filtered = allData.filter(r => 
-                (r[1] && r[1].toLowerCase().includes(val)) || 
-                (r[2] && r[2].toLowerCase().includes(val))
-            );
-            renderJadual(filtered);
-        });
-
-        // FUNGSI: CARTA ANALISIS
-        function binaCarta(data) {
-            const counts = { 'Kurikulum': 0, 'HEM': 0, 'Kokurikulum': 0 };
-            data.forEach(r => { if(counts[r[2]] !== undefined) counts[r[2]]++; });
-
-            const ctx = document.getElementById('categoryChart').getContext('2d');
-            if(myChart) myChart.destroy();
-            myChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: Object.keys(counts),
-                    datasets: [{
-                        data: Object.values(counts),
-                        backgroundColor: ['#002366', '#10b981', '#a855f7'],
-                        borderWidth: 4,
-                        borderColor: '#ffffff',
-                        hoverOffset: 10
-                    }]
-                },
-                options: {
-                    plugins: { legend: { position: 'bottom', labels: { font: { size: 10, weight: 'bold' }, padding: 20 } } },
-                    cutout: '70%'
-                }
-            });
-        }
-
-        // FUNGSI: GENERATE PDF
-        function generatePDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            doc.setFillColor(0, 35, 102);
-            doc.rect(0, 0, 210, 40, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(22);
-            doc.text("SAUJANA LINK REPOSITORI", 14, 20);
-            doc.setFontSize(10);
-            doc.text("SMK SAUJANA IMPIAN - SENARAI PAUTAN DIGITAL", 14, 30);
-            
-            doc.autoTable({
-                startY: 45,
-                head: [['Tarikh', 'Nama Pautan', 'Kategori', 'URL']],
-                body: allData.map(r => [r[0], r[1], r[2], r[3]]),
-                headStyles: { fillColor: [0, 35, 102] },
-                styles: { fontSize: 8 }
-            });
-            doc.save("Saujana_Link_Repositori.pdf");
-        }
-
-        // PERMULAAN
-        window.onload = muatData;
-    </script>
-</body>
-</html>
+                            <tbody id="tableBody" class
