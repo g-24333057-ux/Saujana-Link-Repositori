@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saujana Link Repositori</title>
+    <title>Sistem Pautan SMK Saujana Impian</title>
     
-    <!-- Framework & Library Integrasi -->
+    <!-- FRAMEWORKS & LIBRARIES -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -13,298 +13,320 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
-        .bg-royal-blue { background-color: #002366; }
-        .text-royal-blue { color: #002366; }
-        .border-royal-blue { border-color: #002366; }
-        .btn-royal { background-color: #002366; color: white; transition: all 0.3s ease; border-radius: 12px; font-weight: 700; }
-        .btn-royal:hover { background-color: #001a4d; transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 35, 102, 0.3); }
-        .card { background: white; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
-        .input-box { width: 100%; padding: 0.75rem 1rem; border: 1px solid #cbd5e1; border-radius: 10px; outline: none; transition: 0.2s; }
-        .input-box:focus { border-color: #002366; ring: 2px; box-shadow: 0 0 0 3px rgba(0, 35, 102, 0.1); }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
         
-        /* Loading Animation */
-        .spinner { border: 3px solid rgba(0, 35, 102, 0.1); border-left-color: #002366; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        :root { --royal-blue: #002366; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        
+        .bg-royal-blue { background-color: var(--royal-blue); }
+        .text-royal-blue { color: var(--royal-blue); }
+        .border-royal-blue { border-color: var(--royal-blue); }
+        
+        .card { background: white; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border: 1px solid rgba(0,0,0,0.05); }
+        .input-style { width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; outline: none; transition: all 0.2s; }
+        .input-style:focus { border-color: var(--royal-blue); box-shadow: 0 0 0 3px rgba(0,35,102,0.1); }
+        
+        #loader { position: fixed; inset: 0; background: rgba(255,255,255,0.9); display: none; justify-content: center; align-items: center; z-index: 100; }
+        
+        @media (max-width: 640px) {
+            .header-text { text-align: center; }
+            .logo-img { margin-bottom: 1rem; }
+        }
     </style>
 </head>
-<body class="pb-12">
+<body class="min-h-screen pb-12">
+
+    <!-- LOADING OVERLAY -->
+    <div id="loader">
+        <div class="text-center">
+            <i class="fas fa-circle-notch fa-spin text-5xl text-royal-blue mb-4"></i>
+            <p class="font-bold text-royal-blue tracking-widest text-sm uppercase italic">Menghubungkan Database...</p>
+        </div>
+    </div>
 
     <!-- HEADER SECTION -->
-    <header class="bg-royal-blue text-white p-6 shadow-2xl border-b-4 border-yellow-500">
-        <div class="container mx-auto flex flex-col md:flex-row items-center gap-6">
-            <img src="https://i.postimg.cc/SN3YKfvk/smksi.png" alt="Logo SMKSI" class="w-20 bg-white p-2 rounded-xl shadow-lg">
-            <div class="text-center md:text-left">
-                <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight uppercase">Saujana Link Repositori</h1>
-                <div class="text-xs md:text-sm opacity-90 uppercase tracking-widest mt-1 font-medium">
-                    <p>SMK Saujana Impian</p>
-                    <p class="italic text-yellow-300">KM 22, Jalan Cheras, 43000 Kajang. Selangor.</p>
+    <header class="bg-white border-b-4 border-royal-blue shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between">
+            <div class="flex flex-col md:flex-row items-center space-x-0 md:space-x-5 header-text">
+                <img src="https://i.postimg.cc/SN3YKfvk/smksi.png" alt="Logo SMKSI" class="h-16 md:h-20 w-auto logo-img">
+                <div>
+                    <h1 class="text-xl md:text-3xl font-black text-royal-blue uppercase tracking-tighter leading-none">SMK Saujana Impian</h1>
+                    <p class="text-[10px] md:text-xs text-gray-500 font-bold mt-1 uppercase tracking-wide">KM 22, Jalan Cheras, 43000 Kajang, Selangor.</p>
                 </div>
+            </div>
+            <div class="mt-4 md:mt-0 text-center md:text-right">
+                <span class="bg-royal-blue text-white px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-sm">Repositori Pautan Digital</span>
+                <p id="currentDate" class="text-xs text-gray-400 font-bold mt-2 uppercase"></p>
             </div>
         </div>
     </header>
 
-    <main class="container mx-auto px-4 mt-8">
+    <main class="container mx-auto px-4 py-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <!-- LEFT PANEL: FORM & CARTA -->
+            <!-- LEFT COLUMN: INPUT FORM & CHART -->
             <div class="lg:col-span-4 space-y-6">
                 <!-- FORM CARD -->
                 <div class="card p-6 border-t-8 border-royal-blue">
-                    <h2 class="text-xl font-bold mb-6 text-royal-blue flex items-center gap-3">
-                        <i class="fas fa-plus-circle"></i> Tambah Pautan Baru
+                    <h2 class="text-lg font-bold text-royal-blue mb-6 flex items-center uppercase tracking-widest border-b pb-2">
+                        <i class="fas fa-plus-circle mr-3 text-sm"></i> Tambah Link
                     </h2>
                     <form id="linkForm" class="space-y-4">
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1 tracking-wider">Nama Pautan / Bahan</label>
-                            <input type="text" id="nama" required class="input-box" placeholder="Contoh: Modul Latihan Matematik T4">
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Nama Pautan</label>
+                            <input type="text" id="linkName" placeholder="Contoh: Borang Transit PBD" required class="input-style font-medium">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1 tracking-wider">Kategori Utama</label>
-                            <select id="kategori" required class="input-box">
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Kategori</label>
+                            <select id="category" class="input-style font-bold bg-gray-50">
                                 <option value="Kurikulum">Kurikulum</option>
                                 <option value="HEM">HEM</option>
                                 <option value="Kokurikulum">Kokurikulum</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1 tracking-wider">URL Web Link</label>
-                            <input type="url" id="url" required class="input-box" placeholder="https://anyflip.com/xxxxx">
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">URL Web Link</label>
+                            <input type="url" id="linkUrl" placeholder="https://..." required class="input-style font-medium">
                         </div>
-                        <button type="submit" id="btnSimpan" class="w-full btn-royal py-4 shadow-lg flex items-center justify-center gap-2">
-                            <i class="fas fa-save"></i> SIMPAN KE REPOSITORI
+                        <button type="submit" id="saveBtn" class="w-full bg-royal-blue text-white font-bold py-3 rounded-lg shadow-lg hover:brightness-125 transition flex items-center justify-center tracking-widest uppercase">
+                            <i class="fas fa-save mr-2"></i> Simpan Data
                         </button>
                     </form>
                 </div>
 
-                <!-- ANALYTICS CARD -->
+                <!-- CHART CARD -->
                 <div class="card p-6">
-                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 border-b pb-2">
-                        <i class="fas fa-chart-pie mr-2"></i> Analisis Ringkasan
-                    </h3>
-                    <div class="h-64 relative">
-                        <canvas id="categoryChart"></canvas>
+                    <h2 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4 text-center">Analisis Kategori</h2>
+                    <div class="w-full h-48">
+                        <canvas id="statChart"></canvas>
                     </div>
                 </div>
             </div>
 
-            <!-- RIGHT PANEL: JADUAL DATA -->
+            <!-- RIGHT COLUMN: TABLE LIST -->
             <div class="lg:col-span-8">
-                <div class="card p-6 min-h-[600px]">
-                    <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
-                        <h2 class="text-xl font-bold text-royal-blue flex items-center gap-3">
-                            <i class="fas fa-database"></i> Pangkalan Data Pautan
-                        </h2>
-                        <div class="flex gap-2 w-full md:w-auto">
-                            <div class="relative flex-grow">
-                                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                                <input type="text" id="search" placeholder="Cari bahan..." class="pl-10 pr-4 py-2 border border-gray-200 rounded-xl text-sm w-full outline-none focus:ring-1 focus:ring-royal-blue transition">
-                            </div>
-                            <button onclick="generatePDF()" class="bg-red-600 text-white px-5 py-2 rounded-xl text-sm font-bold shadow hover:bg-red-700 flex items-center gap-2 transition">
-                                <i class="fas fa-file-pdf"></i> PDF
+                <div class="card overflow-hidden">
+                    <!-- TABLE HEADER / FILTERS -->
+                    <div class="p-6 border-b flex flex-col md:flex-row justify-between items-center gap-4 bg-white">
+                        <h2 class="text-xl font-bold text-royal-blue uppercase tracking-tight">Senarai Pautan Guru</h2>
+                        <div class="flex items-center space-x-2 w-full md:w-auto">
+                            <select id="filterCat" class="px-4 py-2 border rounded-full text-xs font-bold text-gray-600 focus:outline-none shadow-sm">
+                                <option value="Semua">Semua Kategori</option>
+                                <option value="Kurikulum">Kurikulum</option>
+                                <option value="HEM">HEM</option>
+                                <option value="Kokurikulum">Kokurikulum</option>
+                            </select>
+                            <button onclick="exportPDF()" class="bg-green-600 text-white px-4 py-2 rounded-full text-xs font-bold shadow-md hover:bg-green-700 flex items-center transition">
+                                <i class="fas fa-file-pdf mr-2"></i> PDF
                             </button>
                         </div>
                     </div>
-
-                    <div class="overflow-x-auto border border-gray-100 rounded-2xl">
-                        <table class="w-full text-left">
-                            <thead class="bg-gray-50 border-b border-gray-100">
-                                <tr>
-                                    <th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Nama & Tarikh</th>
-                                    <th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Kategori</th>
-                                    <th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Tindakan</th>
+                    
+                    <!-- TABLE CONTENT -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm border-collapse">
+                            <thead>
+                                <tr class="bg-gray-50 text-royal-blue uppercase text-[10px] font-black border-b tracking-widest">
+                                    <th class="px-6 py-4">Maklumat Pautan</th>
+                                    <th class="px-6 py-4">Kategori</th>
+                                    <th class="px-6 py-4 text-center">Akses</th>
                                 </tr>
                             </thead>
-                            <tbody id="tableBody" class="divide-y divide-gray-50 text-gray-700">
-                                <!-- Data akan ditarik secara dinamik -->
+                            <tbody id="tableBody" class="divide-y divide-gray-100">
+                                <!-- Data injected via JavaScript -->
                             </tbody>
                         </table>
-                    </div>
-                    
-                    <!-- LOADING OVERLAY -->
-                    <div id="loader" class="hidden flex flex-col items-center justify-center py-20">
-                        <div class="spinner"></div>
-                        <p class="mt-4 text-gray-400 text-xs font-bold tracking-widest uppercase italic">Memproses Data Sekolah...</p>
+                        <div id="noData" class="hidden py-20 text-center text-gray-300 uppercase text-xs font-bold tracking-widest">
+                            <i class="fas fa-database mb-2 text-2xl"></i><br>Tiada rekod ditemui
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </main>
 
+    <footer class="mt-12 py-8 text-center bg-white border-t">
+        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.4em]">&copy; SMK Saujana Impian | Unit Digital</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // WEB APP URL INTEGRASI (URL Web App Anda)
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwk_vExFLVxujA6lmGI_4Y_KXj3YbCDfBps8TQyqlhMuIeIXEcqZM9KNmoiK8GtmfvBHg/exec';
+        // WEB APP URL DARI GOOGLE APPS SCRIPT
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyft-V75X9njls5_EgEkL_uM0pR2_jG7-3PHJb_pHGHWJVe-4H2xFop42ZYxzaAXzgyXA/exec";
         
-        let allData = [];
-        let myChart;
+        let allLinks = [];
+        let myChart = null;
 
-        // FUNGSI 1: SIMPAN DATA (POST)
-        document.getElementById('linkForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btnSimpan');
-            const originalBtn = btn.innerHTML;
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set Live Date
+            document.getElementById('currentDate').innerText = new Date().toLocaleDateString('ms-MY', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase();
             
-            btn.disabled = true;
-            btn.innerHTML = '<div class="spinner border-white"></div>';
+            // Load Initial Data
+            loadLinks();
 
-            const payload = {
-                nama: document.getElementById('nama').value,
-                kategori: document.getElementById('kategori').value,
-                url: document.getElementById('url').value
-            };
+            // Form Submit Listener
+            document.getElementById('linkForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                await saveLink();
+            });
 
-            // Menggunakan google.script.run untuk komunikasi Backend Apps Script
-            google.script.run
-                .withSuccessHandler(function() {
-                    alert("Berjaya! Pautan telah disimpan dalam repositori.");
-                    document.getElementById('linkForm').reset();
-                    btn.disabled = false;
-                    btn.innerHTML = originalBtn;
-                    muatData(); // Refresh jadual
-                })
-                .withFailureHandler(function(err) {
-                    alert("Ralat Sistem: " + err.message);
-                    btn.disabled = false;
-                    btn.innerHTML = originalBtn;
-                })
-                .simpanData(payload); // Memanggil fungsi simpanData(obj) di Code.gs
+            // Filter Change Listener
+            document.getElementById('filterCat').addEventListener('change', renderTable);
         });
 
-        // FUNGSI 2: MUAT DATA (GET)
-        function muatData() {
-            document.getElementById('loader').classList.remove('hidden');
-            document.getElementById('tableBody').innerHTML = '';
-            
-            google.script.run
-                .withSuccessHandler(function(data) {
-                    allData = data;
-                    renderJadual(data);
-                    binaCarta(data);
-                    document.getElementById('loader').classList.add('hidden');
-                })
-                .withFailureHandler(function(err) {
-                    console.error("Gagal muat data:", err);
-                    document.getElementById('loader').classList.add('hidden');
-                })
-                .ambilData(); // Memanggil fungsi ambilData() di Code.gs
+        function toggleLoader(show) {
+            document.getElementById('loader').style.display = show ? 'flex' : 'none';
         }
 
-        // FUNGSI 3: PAPAR DATA DALAM JADUAL
-        function renderJadual(data) {
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = '';
+        async function loadLinks() {
+            toggleLoader(true);
+            try {
+                const response = await fetch(WEB_APP_URL);
+                allLinks = await response.json();
+                renderTable();
+                updateChart();
+            } catch (err) {
+                console.error("Gagal memuat data:", err);
+            }
+            toggleLoader(false);
+        }
+
+        async function saveLink() {
+            const btn = document.getElementById('saveBtn');
+            const originalText = btn.innerHTML;
             
-            if (!data || data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" class="p-20 text-center text-gray-400 italic font-medium">Tiada pautan tersimpan buat masa ini.</td></tr>';
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Menyimpan...';
+
+            const payload = {
+                name: document.getElementById('linkName').value,
+                category: document.getElementById('category').value,
+                url: document.getElementById('linkUrl').value,
+                date: new Date().toLocaleString('ms-MY')
+            };
+
+            try {
+                // Post data ke Web App
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify(payload)
+                });
+                
+                alert("Berjaya! Data telah dihantar ke Cloud.");
+                document.getElementById('linkForm').reset();
+                
+                // Beri masa 2 saat untuk Google kemaskini sheet sebelum refresh
+                setTimeout(loadLinks, 2000);
+            } catch (err) {
+                alert("Ralat penghantaran data!");
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        }
+
+        function renderTable() {
+            const filter = document.getElementById('filterCat').value;
+            const tbody = document.getElementById('tableBody');
+            const noData = document.getElementById('noData');
+            tbody.innerHTML = '';
+
+            const filtered = filter === 'Semua' ? allLinks : allLinks.filter(x => x.kategori === filter);
+
+            if (filtered.length === 0) {
+                noData.classList.remove('hidden');
                 return;
             }
 
-            // Susun data terbaru di atas
-            [...data].reverse().forEach(row => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-blue-50 transition duration-150 group";
-                tr.innerHTML = `
-                    <td class="p-4">
-                        <div class="font-bold text-gray-900 group-hover:text-royal-blue transition">${row[1]}</div>
-                        <div class="text-[10px] text-gray-400 mt-1 uppercase font-bold tracking-tighter">
-                            <i class="far fa-clock mr-1"></i> ${row[0]}
-                        </div>
-                    </td>
-                    <td class="p-4 text-center">
-                        <span class="px-4 py-1.5 text-[10px] font-extrabold rounded-lg shadow-sm border ${getBadge(row[2])}">
-                            ${row[2]}
-                        </span>
-                    </td>
-                    <td class="p-4 text-center">
-                        <a href="${row[3]}" target="_blank" class="inline-flex items-center gap-2 bg-royal-blue text-white px-6 py-2.5 rounded-xl text-xs font-bold hover:bg-black transition-all shadow-md active:scale-95">
-                            BUKA LINK <i class="fas fa-external-link-alt text-[8px]"></i>
-                        </a>
-                    </td>
+            noData.classList.add('hidden');
+            filtered.forEach(item => {
+                const row = `
+                    <tr class="hover:bg-blue-50 transition border-l-4 border-transparent hover:border-royal-blue">
+                        <td class="px-6 py-4">
+                            <div class="font-bold text-slate-700 text-sm capitalize">${item.nama || 'Tiada Nama'}</div>
+                            <div class="text-[9px] text-slate-400 font-mono italic tracking-tighter">${item.tarikh || ''}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-3 py-1 rounded-full text-[9px] font-black uppercase ${getBadgeStyle(item.kategori)}">
+                                ${item.kategori || 'Kurikulum'}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <a href="${item.url}" target="_blank" class="w-10 h-10 inline-flex items-center justify-center bg-royal-blue text-white rounded-lg shadow-md hover:scale-110 transition duration-200">
+                                <i class="fas fa-external-link-alt text-xs"></i>
+                            </a>
+                        </td>
+                    </tr>
                 `;
-                tbody.appendChild(tr);
+                tbody.innerHTML += row;
             });
         }
 
-        // FUNGSI 4: WARNA LABEL KATEGORI
-        function getBadge(cat) {
-            if(cat === 'Kurikulum') return 'bg-blue-50 text-blue-700 border-blue-200';
-            if(cat === 'HEM') return 'bg-emerald-50 text-emerald-700 border-emerald-200';
-            return 'bg-purple-50 text-purple-700 border-purple-200';
+        function getBadgeStyle(cat) {
+            if (cat === 'Kurikulum') return 'bg-blue-100 text-blue-700';
+            if (cat === 'HEM') return 'bg-emerald-100 text-emerald-700';
+            if (cat === 'Kokurikulum') return 'bg-purple-100 text-purple-700';
+            return 'bg-gray-100 text-gray-600';
         }
 
-        // FUNGSI 5: CARIAN DINAMIK
-        document.getElementById('search').addEventListener('input', function(e) {
-            const val = e.target.value.toLowerCase();
-            const filtered = allData.filter(r => 
-                (r[1] && r[1].toLowerCase().includes(val)) || 
-                (r[2] && r[2].toLowerCase().includes(val))
-            );
-            renderJadual(filtered);
-        });
+        function updateChart() {
+            const ctx = document.getElementById('statChart').getContext('2d');
+            const stats = { 'Kurikulum': 0, 'HEM': 0, 'Kokurikulum': 0 };
+            allLinks.forEach(item => { 
+                if(stats[item.kategori] !== undefined) stats[item.kategori]++; 
+            });
 
-        // FUNGSI 6: CARTA ANALISIS (CHART.JS)
-        function binaCarta(data) {
-            const counts = { 'Kurikulum': 0, 'HEM': 0, 'Kokurikulum': 0 };
-            data.forEach(r => { if(counts[r[2]] !== undefined) counts[r[2]]++; });
-
-            const ctx = document.getElementById('categoryChart').getContext('2d');
-            if(myChart) myChart.destroy();
+            if (myChart) myChart.destroy();
             myChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: Object.keys(counts),
-                    datasets: [{
-                        data: Object.values(counts),
-                        backgroundColor: ['#002366', '#10b981', '#a855f7'],
-                        borderWidth: 6,
-                        borderColor: '#ffffff',
-                        hoverOffset: 12
+                    labels: Object.keys(stats),
+                    datasets: [{ 
+                        data: Object.values(stats), 
+                        backgroundColor: ['#002366', '#10b981', '#a855f7'], 
+                        borderWidth: 0 
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
                     plugins: { 
                         legend: { 
                             position: 'bottom', 
-                            labels: { padding: 25, usePointStyle: true, font: { size: 10, weight: 'bold' } } 
-                        }
-                    },
-                    cutout: '70%'
+                            labels: { boxWidth: 10, font: { size: 10, weight: 'bold' } } 
+                        } 
+                    }, 
+                    cutout: '75%' 
                 }
             });
         }
 
-        // FUNGSI 7: EXPORT PDF (JSPDF)
-        function generatePDF() {
+        function exportPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             
-            // Header Report
+            // Header PDF dengan warna Royal Blue
             doc.setFillColor(0, 35, 102);
             doc.rect(0, 0, 210, 40, 'F');
+            
             doc.setTextColor(255, 255, 255);
-            doc.setFontSize(22);
-            doc.text("SAUJANA LINK REPOSITORI", 14, 20);
+            doc.setFontSize(20);
+            doc.setFont(undefined, 'bold');
+            doc.text("SMK SAUJANA IMPIAN", 14, 20);
             doc.setFontSize(10);
-            doc.text("SMK SAUJANA IMPIAN - KM 22, JALAN CHERAS, KAJANG", 14, 30);
+            doc.text("LAPORAN SENARAI PAUTAN REPOSITORI DIGITAL", 14, 30);
             
-            // AutoTable
+            const tableRows = allLinks.map(i => [i.nama, i.kategori, i.url, i.tarikh]);
             doc.autoTable({
-                startY: 45,
-                head: [['Tarikh Kemaskini', 'Nama Bahan/Pautan', 'Kategori', 'Pautan URL']],
-                body: allData.map(r => [r[0], r[1], r[2], r[3]]),
-                headStyles: { fillColor: [0, 35, 102], fontSize: 10, halign: 'center' },
-                styles: { fontSize: 8, cellPadding: 3 }
+                head: [['NAMA', 'KATEGORI', 'URL', 'TARIKH']],
+                body: tableRows,
+                startY: 50,
+                headStyles: { fillColor: [0, 35, 102], fontStyle: 'bold' },
+                styles: { fontSize: 8 }
             });
-            
-            doc.save("Repositori_Saujana_Link.pdf");
+            doc.save('Laporan_Pautan_SMKSI.pdf');
         }
-
-        // MUAT DATA AUTOMATIK BILA APPS DIBUKA
-        window.onload = muatData;
     </script>
 </body>
 </html>
